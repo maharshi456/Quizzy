@@ -5,9 +5,14 @@ import {
   Box,
   Card,
   CardContent,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
   List,
   ListItem,
+  Radio,
+  RadioGroup,
   Typography,
 } from "@mui/material";
 
@@ -48,11 +53,55 @@ function App() {
                       <Typography variant="body1" fontWeight={600}>
                         Q.{idx + 1}) {i.question}
                       </Typography>
-                      <List>
+                      <FormControl sx={{ ml: 1 }}>
+                        <RadioGroup
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          name="radio-buttons-group"
+                        >
+                          {i.answers?.answer_a && (
+                            <FormControlLabel
+                              value="answer_a"
+                              control={<Radio size="small" />}
+                              label={i.answers?.answer_a}
+                            />
+                          )}
+                          {i.answers?.answer_b && (
+                            <FormControlLabel
+                              value="answer_b"
+                              control={<Radio size="small" />}
+                              label={i.answers?.answer_b}
+                            />
+                          )}
+                          {i.answers?.answer_c && (
+                            <FormControlLabel
+                              value="answer_c"
+                              control={<Radio size="small" />}
+                              label={i.answers?.answer_c}
+                            />
+                          )}
+                          {i.answers?.answer_d && (
+                            <FormControlLabel
+                              value="answer_d"
+                              control={<Radio size="small" />}
+                              label={i.answers?.answer_d}
+                            />
+                          )}
+                          {i.answers?.answer_e && (
+                            <FormControlLabel
+                              value="answer_e"
+                              control={<Radio size="small" />}
+                              label={i.answers?.answer_e}
+                            />
+                          )}
+                        </RadioGroup>
+                      </FormControl>
+                      {/* <List>
                         <ListItem>
-                          <Typography></Typography>
+                          <Typography variant="subtitle1">
+                            A.{i.answers?.answer_a}
+                          </Typography>
                         </ListItem>
-                      </List>
+                      </List> */}
                     </CardContent>
                   </Card>
                 </Grid>
