@@ -13,11 +13,13 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import moment from "moment";
+import { db } from "./Firestore";
+import moment, { now } from "moment";
 import { useNavigate } from "react-router-dom";
+import { doc, updateDoc } from "@firebase/firestore";
 
-const Main = (props) => {
-  const API_KEY = "pjaRLNgjcmRxywT1CPFD4a0Vj2p6kn3nXHLeyKTk";
+const Main = ({ type, loginID, setOpen, setMessage }) => {
+  const API_KEY = "OeKeq8NBKtYrxmAVbqUUq37sJVI3mZAoKlMcjU4Z";
   const Ref = useRef("10:00");
   const navigate = useNavigate();
   const [QuestionBank, setQuestionBank] = useState([]);
@@ -39,15 +41,26 @@ const Main = (props) => {
     }
   }, [rend]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/result", { state: AnswerId });
+    if (loginID) {
+      try {
+        await updateDoc(doc(db, "Leaderboard", loginID), {
+          score: AnswerId.length,
+          used_at: now(),
+        });
+        navigate("/result", { state: AnswerId });
+      } catch (e) {
+        setOpen(true);
+        setMessage(e.message);
+      }
+    }
   };
 
   useEffect(() => {
     axios
       .get(
-        `https://quizapi.io/api/v1/questions?apiKey=${API_KEY}&category=sql&difficulty=Easy&limit=10`
+        `https://quizapi.io/api/v1/questions?apiKey=${API_KEY}&category=${type}&difficulty=Easy&limit=10`
       )
       .then((res) => setQuestionBank(res.data))
       .catch((err) => console.log("error", err));
@@ -163,6 +176,10 @@ const Main = (props) => {
   );
 };
 
-Main.propTypes = {};
+Main.propTypes = {
+  type: PropTypes.string,
+  setOpen: PropTypes.func,
+  setMessage: PropTypes.func,
+};
 
 export default Main;
