@@ -4,16 +4,16 @@ import Main from "./Main";
 import Result from "./Result";
 import { db } from "./Firestore";
 import { useEffect, useState } from "react";
-import { addDoc, collection, getDocs } from "@firebase/firestore";
-import { now } from "moment";
+import { collection, getDocs } from "@firebase/firestore";
 import Login from "./Login";
 import ErrorSnackBar from "./ErrorSnackBar";
 
 function App() {
   const [type, setType] = useState("sql");
   const [loginID, setLoginID] = useState("");
-  const [playersList, setPlayersList] = useState();
+  const [playersList, setPlayersList] = useState([]);
   const [open, setOpen] = useState(false);
+  const [callApi, setCallApi] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function App() {
       }));
       setPlayersList(newData);
     });
-  }, []);
+  }, [callApi]);
 
   return (
     <>
@@ -38,6 +38,7 @@ function App() {
                 playersList={playersList}
                 setOpen={setOpen}
                 setMessage={setMessage}
+                setCallApi={setCallApi}
               />
             }
             path="/"

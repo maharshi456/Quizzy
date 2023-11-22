@@ -1,26 +1,24 @@
 import { addDoc, collection } from "@firebase/firestore";
-import { Close } from "@mui/icons-material";
+import { LeaderboardRounded } from "@mui/icons-material";
 import {
   Box,
   Button,
   Card,
   CardContent,
   FormControl,
-  Grid,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import { now } from "moment";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import ErrorSnackBar from "./ErrorSnackBar";
 import { useNavigate } from "react-router-dom";
+import LeaderBoard from "./LeaderBoard";
+import { useEffect, useState } from "react";
+import { Drawer } from "@mui/joy";
 
 const Categories = ["Bash", "Linux", "Docker", "SQL", "DevOps"];
 
@@ -31,6 +29,7 @@ const Login = ({
   playersList,
   setMessage,
   setOpen,
+  setCallApi,
 }) => {
   const {
     register,
@@ -38,6 +37,7 @@ const Login = ({
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const [anchor, setAnchor] = useState(false);
 
   const onSubmit = async (event) => {
     if (playersList.filter((i) => i.name === event.name).length > 0) {
@@ -60,9 +60,21 @@ const Login = ({
     }
   };
 
+  useEffect(() => {
+    setCallApi((prev) => !prev);
+  }, []);
+
   return (
     <>
       <Box height={"100%"}>
+        <Button
+          sx={{ m: 1 }}
+          variant="contained"
+          onClick={() => setAnchor(true)}
+          startIcon={<LeaderboardRounded />}
+        >
+          LeaderBoard
+        </Button>
         <Card
           sx={{
             marginTop: "17% !important",
@@ -96,8 +108,10 @@ const Login = ({
                   defaultValue={""}
                   {...register("type", { required: true })}
                 >
-                  {Categories.map((cat) => (
-                    <MenuItem value={cat}>{cat}</MenuItem>
+                  {Categories.map((cat, cid) => (
+                    <MenuItem value={cat} key={cid}>
+                      {cat}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -118,6 +132,16 @@ const Login = ({
           </CardContent>
         </Card>
       </Box>
+      <Drawer
+        anchor={"left"}
+        open={anchor}
+        variant="soft"
+        color="primary"
+        size="md"
+        onClose={() => setAnchor(false)}
+      >
+        <LeaderBoard playersList={playersList} />
+      </Drawer>
     </>
   );
 };
@@ -128,6 +152,7 @@ Login.propTypes = {
   setLoginID: PropTypes.func,
   setOpen: PropTypes.func,
   setMessage: PropTypes.func,
+  setCallApi: PropTypes.func,
   playersList: PropTypes.array,
 };
 

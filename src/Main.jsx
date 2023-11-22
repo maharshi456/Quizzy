@@ -100,7 +100,6 @@ const Main = ({ type, loginID, setOpen, setMessage }) => {
                               aria-labelledby="demo-radio-buttons-group-label"
                               name="radio-buttons-group"
                               onChange={(e) => {
-                                console.log("OLD Arr", AnswerId);
                                 const Answer = Object.keys(i?.correct_answers)
                                   .filter(
                                     (key) => i.correct_answers[key] == "true"
