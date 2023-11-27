@@ -1,3 +1,4 @@
+import "./App.css";
 import { addDoc, collection } from "@firebase/firestore";
 import { LeaderboardRounded } from "@mui/icons-material";
 import {
@@ -5,6 +6,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardMedia,
   FormControl,
   InputLabel,
   MenuItem,
@@ -19,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import LeaderBoard from "./LeaderBoard";
 import { useEffect, useState } from "react";
 import { Drawer } from "@mui/joy";
+import LoginBG from "./images/LoginBg.jpg";
 
 const Categories = ["Bash", "Linux", "Docker", "SQL", "DevOps"];
 
@@ -66,72 +69,78 @@ const Login = ({
 
   return (
     <>
-      <Box height={"100%"}>
-        <Button
-          sx={{ m: 1 }}
-          variant="contained"
-          onClick={() => setAnchor(true)}
-          startIcon={<LeaderboardRounded />}
-        >
-          LeaderBoard
-        </Button>
-        <Card
-          sx={{
-            marginTop: "17% !important",
-            backgroundColor: "#d7edf5",
-            maxInlineSize: "fit-content",
-            margin: "auto",
-          }}
-        >
-          <CardContent sx={{ px: 10 }}>
-            <Typography variant="h5" py={3} textAlign={"center"}>
-              Login ✏️
-            </Typography>
-            <form onSubmit={handleSubmit(onSubmit)} method="POST">
-              <TextField
-                id="name"
-                name="name"
-                label="Username🔤"
-                fullWidth
-                margin="normal"
-                {...register("name", { required: true })}
-              />
-              {errors.name && (
-                <Typography color={"red"}>⚠️ Please Enter Username</Typography>
-              )}
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Type</InputLabel>
-                <Select
-                  id="type"
-                  name="type"
-                  label="Type"
-                  defaultValue={""}
-                  {...register("type", { required: true })}
-                >
-                  {Categories.map((cat, cid) => (
-                    <MenuItem value={cat} key={cid}>
-                      {cat}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              {errors.type && (
-                <Typography color={"red"}>
-                  ⚠️ Please Select language For Quiz
-                </Typography>
-              )}
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                sx={{ mt: 1.5 }}
+      <Button
+        sx={{ m: 1 }}
+        variant="contained"
+        onClick={() => setAnchor(true)}
+        startIcon={<LeaderboardRounded />}
+      >
+        LeaderBoard
+      </Button>
+      <Card elevation={10} sx={{ borderRadius: "1.5%" }} className="container">
+        <CardContent className="form-container" sx={{ paddingTop: "20%" }}>
+          <Typography variant="h5" py={3} textAlign={"center"}>
+            Register ✏️
+          </Typography>
+          <form onSubmit={handleSubmit(onSubmit)} method="POST">
+            <TextField
+              id="name"
+              name="name"
+              label="Username🔤"
+              fullWidth
+              size="medium"
+              margin="normal"
+              {...register("name", { required: true })}
+            />
+            {errors.name && (
+              <Typography color={"red"}>⚠️ Please Enter Username</Typography>
+            )}
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Type</InputLabel>
+              <Select
+                id="type"
+                name="type"
+                label="Type"
+                defaultValue={""}
+                {...register("type", { required: true })}
               >
-                Login
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </Box>
+                {Categories.map((cat, cid) => (
+                  <MenuItem value={cat} key={cid}>
+                    {cat}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {errors.type && (
+              <Typography color={"red"}>
+                ⚠️ Please Select language For Quiz
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{
+                mt: 1.5,
+                borderRadius: "20px",
+                border: "1px solid #ff4b2b",
+                backgroundColor: "#ff4b2b",
+                color: "white",
+              }}
+            >
+              Login
+            </Button>
+          </form>
+        </CardContent>
+        <Box
+          className="overlay-container"
+          sx={{
+            backgroundImage: `url(${LoginBG})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "52em 50em",
+          }}
+        />
+      </Card>
       <Drawer
         anchor={"left"}
         open={anchor}

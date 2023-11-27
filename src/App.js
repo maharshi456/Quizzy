@@ -4,7 +4,7 @@ import Main from "./Main";
 import Result from "./Result";
 import { db } from "./Firestore";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "@firebase/firestore";
+import { collection, getDocs, orderBy, query } from "@firebase/firestore";
 import Login from "./Login";
 import ErrorSnackBar from "./ErrorSnackBar";
 
@@ -17,7 +17,9 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    getDocs(collection(db, "Leaderboard")).then((querySnapshot) => {
+    getDocs(
+      query(collection(db, "Leaderboard"), orderBy("score", "desc"))
+    ).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
       }));
