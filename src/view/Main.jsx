@@ -13,7 +13,7 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import { db } from "./Firestore";
+import { db } from "../Firestore";
 import moment, { now } from "moment";
 import { useNavigate } from "react-router-dom";
 import { doc, updateDoc } from "@firebase/firestore";
